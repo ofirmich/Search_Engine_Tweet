@@ -1,0 +1,85 @@
+class ReadFile:
+    def __init__(self, corpus_path):
+        self.corpus_path = corpus_path
+
+    def read_file(self, file_name):
+        """
+        This function is reading a parquet file contains several tweets
+        The file location is given as a string as an input to this function.
+        :param file_name: string - indicates thse path to the file we wish to read.
+        :return: a dataframe contains tweets.
+        """
+        full_path = os.path.join(self.corpus_path, file_name)
+        df = pd.read_parquet(full_path, engine="pyarrow")
+        return df.values.tolist()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import os
+# import pandas as pd
+#
+#
+# class ReadFile:
+#     def __init__(self, corpus_path):
+#         self.corpus_path = corpus_path
+#
+#     def read_file(self, file_name):
+#         """
+#         This function is reading a parquet file contains several tweets
+#         The file location is given as a string as an input to this function.
+#         :param file_name: string - indicates the path to the file we wish to read.
+#         :return: a dataframe contains tweets.
+#         """
+#         full_path = os.path.join(self.corpus_path, file_name)
+#         df = pd.read_parquet(full_path, engine="pyarrow")
+#         return df.values.tolist()
+
+
+
+
+import os
+import pandas as pd
+
+
+class ReadFile:
+    def __init__(self, corpus_path):
+        self.corpus_path = corpus_path
+
+
+    def read_file(self, file_name):
+        """
+        This function is reading a parquet file contains several tweets
+        The file location is given as a string as an input to this function.
+        :param file_name: string - indicates the path to the file we wish to read.
+        :return: a dataframe contains tweets.
+        """
+
+        dirs = os.listdir(self.corpus_path)
+        documents_list = []
+        for subdir in dirs:
+            if os.path.isdir(self.corpus_path + "\\" + subdir):
+                dirs2 = os.listdir(self.corpus_path + "\\" + subdir)
+                for file in dirs2:
+                    if 'Store' not in file:
+                        name = self.corpus_path + "\\" + subdir + "\\" + file
+                        df = pd.read_parquet(name, engine="pyarrow")
+                        documents_list += df.values.tolist()
+        return documents_list
+
+
+
